@@ -1,64 +1,736 @@
-// stores.js
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3956985038579491"
+     crossorigin="anonymous"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>埼玉カフェ図鑑 | 地域別カフェ・ランチまとめ</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Zen+Kaku+Gothic+New:wght@300;400;700&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #f9f5ef;
+  --bg2:       #f0ead8;
+  --bg3:       #e8dfc8;
+  --ink:       #2c2015;
+  --ink2:      #6b5440;
+  --ink3:      #9a7d5e;
+  --accent:    #8b5e3c;
+  --accent2:   #c4924a;
+  --accent3:   #4a7c59;
+  --card:      #fffdf8;
+  --border:    #d9cdb8;
+  --shadow:    rgba(44,32,21,.10);
+  --tag-pet-ok:      #e6f2eb;
+  --tag-pet-ok-c:    #2d6a42;
+  --tag-pet-no:      #f5ecea;
+  --tag-pet-no-c:    #8b3a32;
+  --tag-pet-ter:     #e8f0fa;
+  --tag-pet-ter-c:   #2c5282;
+  --tag-pet-unk:     #f5f0e8;
+  --tag-pet-unk-c:   #6b5440;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'Zen Kaku Gothic New',sans-serif;
+  font-weight:300;
+  min-height:100vh;
+  line-height:1.7;
+}
 
-const STORES = [
-  {
-    id: "omiya-01",
-    name: "常盤珈琲焙煎所 大宮店",
-    areaId: "omiya",
-    address: "埼玉県さいたま市大宮区",
-    hours: "10:00-20:00",
-    closed: "不定休",
-    link: '<a href="https://example.com" target="_blank">公式サイト</a>',
-    memo: "自家焙煎のスペシャルティコーヒーが人気。落ち着いた雰囲気で作業にもおすすめ。",
-    tags: ["自家焙煎", "スイーツ"],
-    verified: true
-  },
-  {
-    id: "omiya-02",
-    name: "カフェ・ベローチェ 大宮",
-    areaId: "omiya",
-    address: "埼玉県さいたま市大宮区",
-    hours: "7:00-22:00",
-    closed: "なし",
-    link: '<a href="#" target="_blank">店舗情報</a>',
-    memo: "駅近で使いやすいカフェ。作業や待ち合わせに便利。",
-    tags: ["モーニング", "ランチ"],
-    verified: true
-  },
-  {
-    id: "kawagoe-01",
-    name: "川越ベーカリーカフェ",
-    areaId: "kawagoe",
-    address: "埼玉県川越市",
-    hours: "9:00-18:00",
-    closed: "火曜",
-    link: '<a href="#" target="_blank">Instagram</a>',
-    memo: "古民家を改装した人気カフェ。パンとコーヒーが絶品。",
-    tags: ["古民家", "パンケーキ", "スイーツ"],
-    verified: true
-  },
-  {
-    id: "urawa-01",
-    name: "オーガニックカフェ 浦和",
-    areaId: "urawa",
-    address: "埼玉県さいたま市浦和区",
-    hours: "11:00-19:00",
-    closed: "水曜",
-    link: '<a href="#" target="_blank">公式サイト</a>',
-    memo: "オーガニック食材を使った体に優しいメニュー。",
-    tags: ["オーガニック", "ヴィーガン"],
-    verified: true
-  },
-  {
-    id: "tokorozawa-01",
-    name: "所沢テラスカフェ",
-    areaId: "tokorozawa",
-    address: "埼玉県所沢市",
-    hours: "10:00-17:00",
-    closed: "月曜",
-    link: '<a href="#" target="_blank">詳細</a>',
-    memo: "開放感あるテラス席でゆっくり過ごせる。",
-    tags: ["テラスペット可", "スイーツ"],
-    verified: true
-  }
-];
+/* ── TEXTURE OVERLAY ── */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;
+}
+
+/* ── HERO ── */
+.hero{
+  position:relative;
+  padding:80px 24px 64px;
+  text-align:center;
+  overflow:hidden;
+  border-bottom:1px solid var(--border);
+  background:linear-gradient(160deg,#f0ead8 0%,#f9f5ef 60%,#ede3cf 100%);
+}
+.hero::after{
+  content:'';
+  position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--accent2),transparent);
+}
+.hero-label{
+  display:inline-block;
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:.9rem;
+  letter-spacing:.2em;
+  color:var(--accent2);
+  margin-bottom:20px;
+}
+.hero h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.2rem,6vw,4.8rem);
+  font-weight:700;
+  line-height:1.1;
+  color:var(--ink);
+  margin-bottom:16px;
+}
+.hero h1 em{
+  font-style:italic;
+  color:var(--accent);
+}
+.hero-sub{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.05rem;
+  color:var(--ink2);
+  margin-bottom:36px;
+  font-style:italic;
+}
+.hero-stats{
+  display:flex;
+  justify-content:center;
+  gap:40px;
+  flex-wrap:wrap;
+}
+.stat{text-align:center}
+.stat strong{
+  display:block;
+  font-family:'Playfair Display',serif;
+  font-size:2.2rem;
+  font-weight:700;
+  color:var(--accent);
+  line-height:1;
+}
+.stat span{
+  font-size:.72rem;
+  letter-spacing:.12em;
+  color:var(--ink3);
+  text-transform:uppercase;
+}
+
+/* ── FILTER BAR ── */
+.filter-wrap{
+  position:sticky;top:0;z-index:100;
+  background:rgba(249,245,239,.97);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:0;
+}
+.filter-inner{
+  max-width:1200px;margin:0 auto;
+  padding:12px 20px;
+  display:flex;gap:8px;flex-wrap:wrap;
+  align-items:center;
+}
+.filter-label{
+  font-size:.72rem;
+  letter-spacing:.1em;
+  color:var(--ink3);
+  text-transform:uppercase;
+  white-space:nowrap;
+  margin-right:4px;
+}
+.filter-btn{
+  padding:5px 14px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  background:transparent;
+  color:var(--ink2);
+  font-family:'Zen Kaku Gothic New',sans-serif;
+  font-size:.78rem;
+  font-weight:400;
+  cursor:pointer;
+  transition:all .2s;
+  white-space:nowrap;
+}
+.filter-btn:hover{background:var(--bg2);}
+.filter-btn.active{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:#fff;
+}
+
+/* ── AREA NAV ── */
+.area-nav{
+  background:var(--bg2);
+  border-bottom:1px solid var(--border);
+  overflow-x:auto;
+  white-space:nowrap;
+  padding:0 20px;
+}
+.area-nav-inner{
+  display:inline-flex;
+  gap:0;
+  max-width:1200px;
+  margin:0 auto;
+}
+.area-nav-btn{
+  padding:14px 20px;
+  border:none;
+  background:transparent;
+  color:var(--ink2);
+  font-family:'Zen Kaku Gothic New',sans-serif;
+  font-size:.82rem;
+  font-weight:400;
+  cursor:pointer;
+  border-bottom:2px solid transparent;
+  transition:all .2s;
+  white-space:nowrap;
+}
+.area-nav-btn:hover{color:var(--accent);}
+.area-nav-btn.active{
+  color:var(--accent);
+  border-bottom-color:var(--accent);
+  font-weight:700;
+}
+
+/* ── MAIN ── */
+.main{max-width:1200px;margin:0 auto;padding:0 20px 80px;}
+
+/* ── AREA SECTION ── */
+.area-section{margin-top:56px}
+.area-section.hidden{display:none}
+.area-header{
+  display:flex;
+  align-items:baseline;
+  gap:16px;
+  padding-bottom:12px;
+  border-bottom:2px solid var(--ink);
+  margin-bottom:6px;
+}
+.area-title{
+  font-family:'Playfair Display',serif;
+  font-size:1.8rem;
+  font-weight:700;
+  color:var(--ink);
+}
+.area-count{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:.9rem;
+  color:var(--accent2);
+  letter-spacing:.08em;
+}
+.area-verified{
+  font-size:.7rem;
+  color:var(--accent3);
+  letter-spacing:.05em;
+  margin-bottom:20px;
+  margin-top:6px;
+}
+
+/* ── CARD GRID (雑誌風) ── */
+.card-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+  gap:1px;
+  background:var(--border);
+  border:1px solid var(--border);
+  margin-top:20px;
+}
+
+/* ── CARD ── */
+.card{
+  background:var(--card);
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  transition:background .2s;
+  position:relative;
+}
+.card.filtered-out{display:none}
+.card:hover{background:#fffef9;}
+
+.card-img-wrap{
+  position:relative;
+  width:100%;
+  overflow:hidden;
+  border-bottom:1px solid var(--border);
+}
+.card-img{
+  width:100%;
+  aspect-ratio:16/7;
+  object-fit:cover;
+  display:block;
+  transition:transform .4s ease;
+}
+.card:hover .card-img{
+  transform:scale(1.03);
+}
+.card-img-placeholder{
+  width:100%;
+  aspect-ratio:16/7;
+  background:linear-gradient(135deg,var(--bg2) 0%,var(--bg3) 100%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--ink3);
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:.85rem;
+  letter-spacing:.1em;
+  position:relative;
+  overflow:hidden;
+}
+.card-img-placeholder::after{
+  content:'';
+  position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='28' fill='none' stroke='%23d9cdb8' stroke-width='1'/%3E%3Cpath d='M20 35 Q30 20 40 35' fill='none' stroke='%23d9cdb8' stroke-width='1'/%3E%3Ccircle cx='24' cy='28' r='3' fill='%23d9cdb8'/%3E%3C/svg%3E") center/60px no-repeat;
+  opacity:.4;
+}
+.card-area-badge{
+  position:absolute;top:12px;left:12px;z-index:2;
+  background:rgba(44,32,21,.72);
+  color:#f9f5ef;
+  font-size:.65rem;
+  letter-spacing:.1em;
+  padding:3px 10px;
+  border-radius:2px;
+  backdrop-filter:blur(4px);
+}
+.card-verified-badge{
+  position:absolute;top:12px;right:12px;z-index:2;
+  font-size:.7rem;
+  color:var(--accent3);
+  text-shadow:0 1px 3px rgba(0,0,0,.3);
+}
+
+.card-body{
+  padding:20px 22px 16px;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:0;
+}
+.card-name{
+  font-family:'Playfair Display',serif;
+  font-size:1.12rem;
+  font-weight:700;
+  color:var(--ink);
+  line-height:1.3;
+  margin-bottom:12px;
+  border-left:3px solid var(--accent2);
+  padding-left:10px;
+}
+.card-meta{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:4px 10px;
+  font-size:.78rem;
+  color:var(--ink2);
+  margin-bottom:12px;
+}
+.meta-label{
+  color:var(--ink3);
+  font-size:.7rem;
+  letter-spacing:.06em;
+  white-space:nowrap;
+  padding-top:1px;
+}
+.meta-value a{
+  color:var(--accent);
+  text-decoration:none;
+  border-bottom:1px solid rgba(139,94,60,.3);
+}
+.meta-value a:hover{border-color:var(--accent);}
+.card-memo{
+  font-size:.78rem;
+  color:var(--ink2);
+  line-height:1.6;
+  padding-top:10px;
+  border-top:1px solid var(--border);
+  margin-top:auto;
+}
+
+.card-foot{
+  padding:12px 22px 16px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+}
+.tag{
+  display:inline-flex;align-items:center;gap:3px;
+  padding:3px 10px;
+  border-radius:2px;
+  font-size:.68rem;
+  letter-spacing:.04em;
+  font-weight:400;
+  background:var(--bg2);
+  color:var(--ink2);
+  border:1px solid var(--border);
+}
+.tag.pet-ok  {background:var(--tag-pet-ok);color:var(--tag-pet-ok-c);border-color:var(--tag-pet-ok-c);}
+.tag.pet-no  {background:var(--tag-pet-no);color:var(--tag-pet-no-c);border-color:var(--tag-pet-no-c);}
+.tag.pet-ter {background:var(--tag-pet-ter);color:var(--tag-pet-ter-c);border-color:var(--tag-pet-ter-c);}
+.tag.pet-unk {background:var(--bg2);color:var(--ink3);}
+
+/* ── NO RESULTS ── */
+.no-results{
+  text-align:center;
+  padding:60px 20px;
+  color:var(--ink3);
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:1.1rem;
+  display:none;
+}
+
+/* ── FOOTER ── */
+footer{
+  border-top:1px solid var(--border);
+  background:var(--bg2);
+  padding:48px 20px;
+  text-align:center;
+}
+footer nav{margin-bottom:16px;display:flex;gap:24px;justify-content:center;flex-wrap:wrap;}
+footer nav a{
+  color:var(--ink2);font-size:.82rem;text-decoration:none;
+  border-bottom:1px solid transparent;transition:border-color .2s;
+}
+footer nav a:hover{border-color:var(--ink2);}
+footer p{font-size:.75rem;color:var(--ink3);line-height:2;}
+
+/* ── PAGES ── */
+.page{display:none}
+.page.active{display:block}
+
+/* ── PRIVACY / CONTACT ── */
+.content-page{max-width:800px;margin:0 auto;padding:60px 24px 100px;}
+.content-page h2{
+  font-family:'Playfair Display',serif;
+  font-size:2rem;font-weight:700;
+  color:var(--ink);
+  margin-bottom:8px;
+  padding-bottom:12px;
+  border-bottom:2px solid var(--ink);
+}
+.content-page h3{
+  font-family:'Playfair Display',serif;
+  font-size:1.1rem;
+  color:var(--accent);
+  margin:32px 0 8px;
+}
+.content-page p,.content-page ul{
+  font-size:.88rem;color:var(--ink2);line-height:1.9;margin-bottom:12px;
+}
+.content-page ul{padding-left:1.5em;}
+.content-label{font-size:.7rem;letter-spacing:.1em;color:var(--ink3);margin-bottom:20px;}
+.contact-form{margin-top:32px;display:flex;flex-direction:column;gap:16px;}
+.contact-form label{font-size:.8rem;color:var(--ink2);font-weight:700;letter-spacing:.05em;}
+.contact-form input,.contact-form textarea,.contact-form select{
+  width:100%;padding:12px 14px;
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--ink);
+  font-family:'Zen Kaku Gothic New',sans-serif;
+  font-size:.88rem;
+  border-radius:2px;
+  outline:none;
+  transition:border-color .2s;
+  margin-top:6px;
+}
+.contact-form input:focus,.contact-form textarea:focus{border-color:var(--accent);}
+.contact-form textarea{height:160px;resize:vertical;}
+.btn-submit{
+  padding:14px 32px;
+  background:var(--accent);
+  color:#fff;
+  border:none;
+  border-radius:2px;
+  font-family:'Zen Kaku Gothic New',sans-serif;
+  font-size:.88rem;
+  font-weight:700;
+  letter-spacing:.08em;
+  cursor:pointer;
+  transition:background .2s;
+  align-self:flex-start;
+}
+.btn-submit:hover{background:var(--ink);}
+.form-note{font-size:.75rem;color:var(--ink3);}
+
+@media(max-width:600px){
+  .hero h1{font-size:2rem;}
+  .card-grid{grid-template-columns:1fr;}
+  .filter-inner{gap:6px;}
+  .hero-stats{gap:24px;}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <p class="hero-label">Saitama Café & Lunch Directory</p>
+  <h1>埼玉<em>カフェ</em>図鑑</h1>
+  <p class="hero-sub">地元に根ざした118店舗を、地域別に丁寧にまとめました。</p>
+  <div class="hero-stats">
+    <div class="stat"><strong>10</strong><span>エリア</span></div>
+    <div class="stat"><strong>118</strong><span>店舗掲載</span></div>
+    <div class="stat"><strong>✅</strong><span>情報確認済み</span></div>
+  </div>
+</header>
+
+<!-- TAG FILTER -->
+<div class="filter-wrap">
+  <div class="filter-inner">
+    <span class="filter-label">絞り込み :</span>
+    <button class="filter-btn active" data-tag="all">すべて</button>
+    <button class="filter-btn" data-tag="ペット可">🐾 ペット可</button>
+    <button class="filter-btn" data-tag="テラスペット可">🐾 テラスOK</button>
+    <button class="filter-btn" data-tag="古民家">古民家</button>
+    <button class="filter-btn" data-tag="自家焙煎">自家焙煎</button>
+    <button class="filter-btn" data-tag="モーニング">モーニング</button>
+    <button class="filter-btn" data-tag="ランチ">ランチ</button>
+    <button class="filter-btn" data-tag="オーガニック">オーガニック</button>
+    <button class="filter-btn" data-tag="ヴィーガン">ヴィーガン</button>
+    <button class="filter-btn" data-tag="スイーツ">スイーツ</button>
+    <button class="filter-btn" data-tag="パンケーキ">パンケーキ</button>
+    <button class="filter-btn" data-tag="北欧">北欧</button>
+    <button class="filter-btn" data-tag="山の中">山の中</button>
+    <button class="filter-btn" data-tag="週末限定">週末限定</button>
+    <button class="filter-btn" data-tag="喫茶">喫茶</button>
+  </div>
+</div>
+
+<!-- AREA NAV -->
+<nav class="area-nav">
+  <div class="area-nav-inner">
+    <button class="area-nav-btn active" data-area="all">全エリア</button>
+    <button class="area-nav-btn" data-area="omiya">大宮・さいたま市</button>
+    <button class="area-nav-btn" data-area="urawa">浦和・与野</button>
+    <button class="area-nav-btn" data-area="kawagoe">川越</button>
+    <button class="area-nav-btn" data-area="tokorozawa">所沢</button>
+    <button class="area-nav-btn" data-area="kumagaya">熊谷・秩父</button>
+    <button class="area-nav-btn" data-area="koshigaya">越谷・草加・春日部</button>
+    <button class="area-nav-btn" data-area="minuma">見沼・岩槻</button>
+    <button class="area-nav-btn" data-area="kounosu">鴻巣・行田・加須</button>
+    <button class="area-nav-btn" data-area="hanno">飯能・入間・日高</button>
+    <button class="area-nav-btn" data-area="ageo">上尾・桶川・北本</button>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT PAGES -->
+<div id="page-home" class="page active">
+  <main class="main" id="main-content">
+    <div class="no-results" id="no-results">該当するお店が見つかりませんでした。</div>
+  </main>
+</div>
+
+<div id="page-privacy" class="page">
+  <div class="content-page">
+    <p class="content-label">PRIVACY POLICY</p>
+    <h2>プライバシーポリシー</h2>
+    <p>埼玉カフェ図鑑（以下「当サイト」）は、ユーザーの個人情報の取り扱いについて、以下の通りプライバシーポリシーを定めます。</p>
+
+    <h3>アクセス解析ツールについて</h3>
+    <p>当サイトでは、Googleによるアクセス解析ツール「Googleアナリティクス」を使用しています。このGoogleアナリティクスはデータの収集のためにCookieを使用しています。このデータは匿名で収集されており、個人を特定するものではありません。この機能はCookieを無効にすることで収集を拒否することが出来ますので、お使いのブラウザの設定をご確認ください。</p>
+
+    <h3>広告について</h3>
+    <p>当サイトでは、第三者配信の広告サービス（Googleアドセンス等）を利用しています。このような広告配信事業者は、ユーザーの興味に応じた商品やサービスの広告を表示するため、当サイトや他のサイトへのアクセスに関する情報（氏名、住所、メール アドレス、電話番号は含まれません）を使用することがあります。</p>
+
+    <h3>掲載情報について</h3>
+    <p>当サイトに掲載している店舗情報（営業時間・定休日・住所等）は、取材時点の情報をもとに構成しています。情報が変更されている場合がありますので、訪問前に必ず各店舗へ直接ご確認ください。当サイトは掲載情報の正確性について一切の責任を負いかねます。</p>
+
+    <h3>お問い合わせ</h3>
+    <p>当サイトのプライバシーポリシーに関するお問い合わせは、お問い合わせページよりご連絡ください。</p>
+
+    <p style="margin-top:32px;font-size:.78rem;color:var(--ink3);">制定日：2025年1月</p>
+  </div>
+</div>
+
+<div id="page-contact" class="page">
+  <div class="content-page">
+    <p class="content-label">CONTACT</p>
+    <h2>お問い合わせ</h2>
+    <p>掲載情報の誤り・修正依頼・掲載希望・その他お問い合わせは以下のフォームよりご連絡ください。<br>通常3〜5営業日以内にご返信いたします。</p>
+
+    <form class="contact-form" onsubmit="handleSubmit(event)">
+      <div>
+        <label>お名前 <span style="color:var(--accent);">*</span><br>
+        <input type="text" name="name" required placeholder="山田 太郎"></label>
+      </div>
+      <div>
+        <label>メールアドレス <span style="color:var(--accent);">*</span><br>
+        <input type="email" name="email" required placeholder="example@email.com"></label>
+      </div>
+      <div>
+        <label>お問い合わせ種別<br>
+        <select name="type">
+          <option>掲載情報の誤り・修正依頼</option>
+          <option>掲載希望（お店の方）</option>
+          <option>サイトに関するご意見・ご要望</option>
+          <option>その他</option>
+        </select></label>
+      </div>
+      <div>
+        <label>お問い合わせ内容 <span style="color:var(--accent);">*</span><br>
+        <textarea name="message" required placeholder="お問い合わせ内容をご記入ください。&#10;掲載情報の修正依頼の場合は、店舗名と修正内容をご記載ください。"></textarea></label>
+      </div>
+      <p class="form-note">※ お問い合わせ内容によっては、ご返信できない場合があります。予めご了承ください。</p>
+      <button type="submit" class="btn-submit">送信する</button>
+    </form>
+    <div id="form-success" style="display:none;margin-top:24px;padding:20px;background:var(--tag-pet-ok);border-radius:2px;color:var(--tag-pet-ok-c);font-size:.88rem;">
+      お問い合わせありがとうございます。内容を確認の上、ご連絡いたします。
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <nav>
+    <a href="#" onclick="showPage('home');return false;">ホーム</a>
+    <a href="#" onclick="showPage('privacy');return false;">プライバシーポリシー</a>
+    <a href="#" onclick="showPage('contact');return false;">お問い合わせ</a>
+  </nav>
+  <p>埼玉カフェ図鑑 | 掲載情報はGoogle Maps等をもとに構成しています。</p>
+  <p>営業時間・定休日は変更になる場合があります。訪問前に各店舗へご確認ください。</p>
+  <p style="margin-top:8px;color:var(--accent);">🐾 ペット情報は店舗により条件が異なります。事前にお問い合わせください。</p>
+</footer>
+
+<script src="stores.js"></script>
+<script>
+// データはstores.jsで定義
+
+const AREA_NAMES = {
+  omiya:'大宮・さいたま市', urawa:'浦和・与野', kawagoe:'川越',
+  tokorozawa:'所沢', kumagaya:'熊谷・秩父', koshigaya:'越谷・草加・春日部',
+  minuma:'見沼・岩槻', kounosu:'鴻巣・行田・加須',
+  hanno:'飯能・入間・日高', ageo:'上尾・桶川・北本',
+};
+
+const AREA_ORDER = ['omiya','urawa','kawagoe','tokorozawa','kumagaya','koshigaya','minuma','kounosu','hanno','ageo'];
+
+let currentTag = 'all';
+let currentArea = 'all';
+
+function petClass(tags) {
+  if (tags.includes('ペット可'))      return 'pet-ok';
+  if (tags.includes('テラスペット可')) return 'pet-ter';
+  if (tags.includes('ペット不可'))    return 'pet-no';
+  return 'pet-unk';
+}
+function petLabel(tags) {
+  if (tags.includes('ペット可'))      return '🐾 ペット可（室内）';
+  if (tags.includes('テラスペット可')) return '🐾 テラスOK';
+  if (tags.includes('ペット不可'))    return '🚫 ペット不可';
+  return '🐾 ペット要確認';
+}
+
+function renderStores() {
+  const main = document.getElementById('main-content');
+  const noRes = document.getElementById('no-results');
+  main.querySelectorAll('.area-section').forEach(el => el.remove());
+
+  const areas = currentArea === 'all' ? AREA_ORDER : [currentArea];
+  let totalVisible = 0;
+
+  areas.forEach(areaId => {
+    const areaStores = STORES.filter(s => {
+      if (s.areaId !== areaId) return false;
+      if (currentTag === 'all') return true;
+      return s.tags.some(t => t === currentTag ||
+        (currentTag === 'ヴィーガン' && (t === 'ヴィーガン' || t === 'ヴィーガン対応')));
+    });
+    if (areaStores.length === 0) return;
+    totalVisible += areaStores.length;
+
+    const sec = document.createElement('section');
+    sec.className = 'area-section';
+    sec.id = 'area-' + areaId;
+
+    sec.innerHTML = `
+      <div class="area-header">
+        <h2 class="area-title">${AREA_NAMES[areaId]}</h2>
+        <span class="area-count">${areaStores.length} spots</span>
+      </div>
+      <p class="area-verified">✅ ネットで情報確認済み（2026年5月時点）</p>
+      <div class="card-grid" id="grid-${areaId}"></div>
+    `;
+    main.insertBefore(sec, noRes);
+
+    const grid = sec.querySelector('.card-grid');
+    areaStores.forEach((s, i) => {
+      const otherTags = s.tags.filter(t => !t.includes('ペット') && t !== 'ペット可' && t !== 'テラスペット可' && t !== 'ペット不可' && t !== 'ペット要確認');
+      const pc = petClass(s.tags);
+      const pl = petLabel(s.tags);
+      const verBadge = s.unverified ? '⚠️ 要確認' : (s.verified ? '✅ 確認済' : '');
+      const verColor = s.unverified ? '#c04040' : 'var(--accent3)';
+
+      const linkHtml = s.link ? s.link : '<span style="color:var(--ink3)">−</span>';
+
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.style.animationDelay = (i * 0.04) + 's';
+      card.innerHTML = `
+        <div class="card-img-placeholder">
+          <span style="position:relative;z-index:1">Photo</span>
+          <span class="card-area-badge">${AREA_NAMES[s.areaId]}</span>
+          ${verBadge ? `<span class="card-verified-badge" style="color:${verColor}">${verBadge}</span>` : ''}
+        </div>
+        <div class="card-body">
+          <div class="card-name">${s.name}</div>
+          <div class="card-meta">
+            <span class="meta-label">住所</span><span class="meta-value">${s.address}</span>
+            <span class="meta-label">営業時間</span><span class="meta-value">${s.hours || '−'}</span>
+            <span class="meta-label">定休日</span><span class="meta-value">${s.closed || '−'}</span>
+            <span class="meta-label">リンク</span><span class="meta-value">${linkHtml}</span>
+          </div>
+          <p class="card-memo">${s.memo}</p>
+        </div>
+        <div class="card-foot">
+          <span class="tag ${pc}">${pl}</span>
+          ${otherTags.slice(0,4).map(t => `<span class="tag">${t}</span>`).join('')}
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  });
+
+  noRes.style.display = totalVisible === 0 ? 'block' : 'none';
+}
+
+// タグフィルター
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentTag = btn.dataset.tag;
+    renderStores();
+  });
+});
+
+// エリアナビ
+document.querySelectorAll('.area-nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.area-nav-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentArea = btn.dataset.area;
+    renderStores();
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+});
+
+// ページ切り替え
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// お問い合わせフォーム
+function handleSubmit(e) {
+  e.preventDefault();
+  document.getElementById('form-success').style.display = 'block';
+  e.target.style.display = 'none';
+}
+
+// 初期描画
+renderStores();
+</script>
+</body>
+</html>
